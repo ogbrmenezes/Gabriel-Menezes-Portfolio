@@ -511,7 +511,7 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 
 .skill-icons {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px 12px;
     margin-top: 12px;
 }
@@ -521,7 +521,7 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    padding: 12px 14px;
+    padding: 12px 16px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -545,8 +545,12 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 }
 
 .skill-icon span {
+    display: block;
+    min-width: 0;
     font-weight: 600;
     letter-spacing: 0.2px;
+    line-height: 1.35;
+    padding-right: 2px;
 }
 
 .skill-icon:hover {
@@ -568,6 +572,24 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 
 .section-subtitle {
     color: var(--muted);
+    font-size: 1rem;
+}
+
+.section-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 140, 0, 0.15);
+    border-radius: 999px;
+    background: rgba(255, 140, 0, 0.06);
+    color: #d6d6d6;
+    font-size: 0.95rem;
+}
+
+.section-note i {
+    color: var(--orange);
     font-size: 1rem;
 }
 
@@ -752,9 +774,61 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 }
 
 .project-thumb {
-    height: 230px;
-    background-size: cover;
-    background-position: center;
+    height: 170px;
+    display: grid;
+    place-items: center;
+    background: #211500;
+}
+
+.project-thumb i {
+    color: var(--orange);
+    font-size: 2.35rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 12px rgba(255, 140, 0, 0.25));
+}
+
+.project-thumb-erp {
+    background: #241800;
+}
+
+.project-thumb-repairs {
+    background: #002f1f;
+}
+
+.project-thumb-repairs i {
+    color: #d8d2e8;
+}
+
+.project-thumb-inspect {
+    background: #001d31;
+}
+
+.project-thumb-inspect i {
+    color: #8ad6ff;
+}
+
+.project-thumb-robozap {
+    background: #2a0030;
+}
+
+.project-thumb-robozap i {
+    color: #f2b4ff;
+}
+
+.project-thumb-tmmotors {
+    background: #2a1515;
+}
+
+.project-thumb-tmmotors i {
+    color: #ff5b4f;
+}
+
+.project-thumb-controle {
+    background: #102700;
+}
+
+.project-thumb-controle i {
+    color: #ffd9a3;
 }
 
 .project-body {
@@ -772,6 +846,36 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 .project-body p {
     color: #e6e6e6;
     line-height: 1.5;
+}
+
+.project-body .project-login-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cfcfcf;
+    font-size: 0.85rem;
+    line-height: 1.3;
+}
+
+.project-login-note i {
+    color: var(--orange);
+}
+
+.project-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.project-badge.in-use {
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.25);
 }
 
 .project-tags {
@@ -792,6 +896,13 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
     border: 1px solid var(--border);
 }
 
+.project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
 .project-cta {
     align-self: flex-start;
     margin-top: 4px;
@@ -804,10 +915,22 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
     box-shadow: 0 0 12px var(--orange-glow);
 }
 
+.project-cta-ghost {
+    background: transparent;
+    color: var(--orange);
+    border: 1px solid rgba(255, 140, 0, 0.65);
+    box-shadow: none;
+}
+
 .project-cta:hover {
     transform: translateY(-2px);
     box-shadow: 0 0 16px var(--orange-glow);
     filter: brightness(1.05);
+}
+
+.project-cta-ghost:hover {
+    background: rgba(255, 140, 0, 0.08);
+    box-shadow: 0 0 12px var(--orange-glow);
 }
 
 .project-nav {
@@ -1155,7 +1278,7 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
     }
 
     .project-track {
-        height: 380px;
+        height: auto;
     }
 }
 
@@ -1173,7 +1296,7 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
 
     .project-track {
         max-width: 100%;
-        height: 360px;
+        height: auto;
     }
 
     .project-slide {
@@ -1297,3 +1420,41 @@ body.light .section, body.light-theme .section { background: var(--bg-light); co
     background: center/contain no-repeat url('../img/icone-ia.png') !important;
 }
 .iron-toggle::after { content: none !important; }
+
+/* Correção dos cards de projeto com ícones no lugar de imagens */
+.project-slide .project-thumb {
+    height: 170px !important;
+    min-height: 170px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-image: none !important;
+    background-size: auto !important;
+    background-position: center !important;
+}
+
+.project-slide .project-thumb i {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    color: var(--orange);
+    font-size: 2.6rem !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    filter: drop-shadow(0 0 12px rgba(255, 140, 0, 0.25));
+}
+
+.project-slide .project-thumb-erp { background: #241800 !important; }
+.project-slide .project-thumb-repairs { background: #002f1f !important; }
+.project-slide .project-thumb-inspect { background: #001d31 !important; }
+.project-slide .project-thumb-robozap { background: #2a0030 !important; }
+.project-slide .project-thumb-tmmotors { background: #2a1515 !important; }
+.project-slide .project-thumb-controle { background: #102700 !important; }
+
+.project-slide .project-thumb-repairs i { color: #d8d2e8 !important; }
+.project-slide .project-thumb-inspect i { color: #8ad6ff !important; }
+.project-slide .project-thumb-robozap i { color: #f2b4ff !important; }
+.project-slide .project-thumb-tmmotors i { color: #ff5b4f !important; }
+.project-slide .project-thumb-controle i { color: #ffd9a3 !important; }

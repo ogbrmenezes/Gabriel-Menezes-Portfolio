@@ -154,16 +154,77 @@
     const projectSlides = Array.from(document.querySelectorAll('.project-slide'));
     const btnPrev = document.querySelector('.project-prev');
     const btnNext = document.querySelector('.project-next');
+    const projectDots = document.querySelector('.project-dots');
 
-    const slideWidth = projectSlides.length ? projectSlides[0].getBoundingClientRect().width + 16 : 0;
+    const getSlideStep = () => {
+        if (!projectSlides.length) return 0;
+        const trackStyles = projectTrack ? getComputedStyle(projectTrack) : null;
+        const gap = trackStyles ? parseFloat(trackStyles.columnGap || trackStyles.gap) || 0 : 0;
+        return projectSlides[0].getBoundingClientRect().width + gap;
+    };
+
+    let projectDotButtons = [];
+
+    const setActiveProject = (index) => {
+        projectSlides.forEach((slide, slideIndex) => {
+            slide.classList.toggle('active', slideIndex === index);
+            slide.classList.toggle('prev', slideIndex === index - 1 || (index === 0 && slideIndex === projectSlides.length - 1));
+            slide.classList.toggle('next', slideIndex === index + 1 || (index === projectSlides.length - 1 && slideIndex === 0));
+        });
+
+        projectDotButtons.forEach((dot, dotIndex) => {
+            dot.classList.toggle('active', dotIndex === index);
+            dot.setAttribute('aria-current', dotIndex === index ? 'true' : 'false');
+        });
+    };
+
+    const getCurrentProjectIndex = () => {
+        if (!projectTrack || !projectSlides.length) return 0;
+        const trackLeft = projectTrack.scrollLeft;
+        return projectSlides.reduce((closestIndex, slide, index) => {
+            const closestDistance = Math.abs(projectSlides[closestIndex].offsetLeft - trackLeft);
+            const slideDistance = Math.abs(slide.offsetLeft - trackLeft);
+            return slideDistance < closestDistance ? index : closestIndex;
+        }, 0);
+    };
+
+    if (projectDots && projectSlides.length) {
+        projectDots.innerHTML = '';
+        projectDotButtons = projectSlides.map((_, index) => {
+            const dot = document.createElement('button');
+            dot.className = 'project-dot';
+            dot.type = 'button';
+            dot.setAttribute('aria-label', `Selecionar projeto ${index + 1}`);
+            dot.addEventListener('click', () => {
+                if (!projectTrack) return;
+                projectTrack.scrollTo({ left: projectSlides[index].offsetLeft, behavior: 'smooth' });
+                setActiveProject(index);
+            });
+            projectDots.appendChild(dot);
+            return dot;
+        });
+        setActiveProject(0);
+    }
 
     const scrollToOffset = (direction) => {
+        const slideWidth = getSlideStep();
         if (!projectTrack || !slideWidth) return;
-        projectTrack.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
+        const currentIndex = getCurrentProjectIndex();
+        const nextIndex = Math.min(Math.max(currentIndex + direction, 0), projectSlides.length - 1);
+        projectTrack.scrollTo({ left: projectSlides[nextIndex].offsetLeft, behavior: 'smooth' });
+        setActiveProject(nextIndex);
     };
 
     if (btnPrev) btnPrev.addEventListener('click', () => scrollToOffset(-1));
     if (btnNext) btnNext.addEventListener('click', () => scrollToOffset(1));
+
+    if (projectTrack) {
+        let projectScrollFrame = null;
+        projectTrack.addEventListener('scroll', () => {
+            if (projectScrollFrame) cancelAnimationFrame(projectScrollFrame);
+            projectScrollFrame = requestAnimationFrame(() => setActiveProject(getCurrentProjectIndex()));
+        });
+    }
 
         // Tabs da Carreira
     const careerTabs = document.querySelectorAll('.career-tab');
